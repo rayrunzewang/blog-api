@@ -7,7 +7,7 @@ const { Article } = require('../models/Notes');
 router.get('/language', async (req, res) => {
     try {
         const data = await Language.find();
-
+        console.log(data)
         res.json(data);
     } catch (error) {
         console.error('Error fetching Languages:', error);
@@ -40,6 +40,8 @@ router.get('/language/:id/article', async (req, res) => {
         .catch(err => {
             console.error(err);
         });
+
+
 
 });
 

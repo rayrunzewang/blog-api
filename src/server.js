@@ -3,9 +3,9 @@ const express = require('express');
 const connectDB = require('./config/dbConn');
 const mongoose = require('mongoose');
 const port = process.env.PORT || 3001;
-// const corsOptions = require('./config/corsOptions');
+const corsOptions = require('./config/corsOptions');
 // const sessionSecret = process.env.SESSION_SECRET;
-// const cors = require('cors');
+const cors = require('cors');
 // const cookieParser = require('cookie-parser');
 // const session = require('express-session');
 // const passport = require('./config/passport-config')
@@ -14,7 +14,7 @@ const app = express();
 
 connectDB();
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 // app.use(cookieParser());
@@ -35,7 +35,7 @@ app.use(express.json());
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-// const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes');
 // const contactRoutes = require('./routes/contactRoutes');
 const notesRoutes = require('./routes/notesRoutes');
 // const sessionRoutes = require('./routes/sessionRoutes');
@@ -43,7 +43,7 @@ const imagesRoutes = require('./routes/imagesRoutes');
 // const emailRoutes = require('./routes/emailRoutes');
 
 // app.use('/register', authRoutes);
-// app.use('/login', authRoutes);
+app.use('/login', authRoutes);
 // app.use('/change-password', authRoutes);
 // app.use('/contact', contactRoutes);
 app.use('/learning', notesRoutes);

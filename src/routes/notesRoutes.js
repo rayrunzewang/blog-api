@@ -64,15 +64,17 @@ router.get('/article/:id', async (req, res) => {
 });
 
 /* ------ Delete Language by ID ------ */
-router.delete('/language/:id', async (req, res) => {
+router.delete('/article/:id', async (req, res) => {
     try {
-        const data = await Language.findByIdAndDelete(req.params.id);
+        const data = await Article.findByIdAndDelete(req.params.id);
+        await Language.updateMany({}, { $pull: { articles: req.params.id } });
+
         if (!data) {
-            return res.status(404).json({ error: 'Language post not found', message: 'Error finding language by ID' });
+            return res.status(404).json({ error: 'Article not found', message: 'Error finding Article by ID' });
         }
         res.json(data);
     } catch (error) {
-        console.error('Error deleting language:', error);
+        console.error('Error deleting article:', error);
         res.status(500).json({ error: 'Internal server error', message: 'Error deleting language by ID' });
     }
 });

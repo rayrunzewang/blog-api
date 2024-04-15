@@ -80,9 +80,10 @@ router.delete('/language/:id', async (req, res) => {
 /* ------ Update Article by ID ------ */
 router.put('/article/:id', async (req, res) => {
     try {
-        const data = await Article.findById(req.params.id);
-        if (!data) {
-            return res.status(404).json({ error: 'Blog post not found', message: 'Error finding blog posts by ID' });
+        console.log(req.body)
+        const updatedArticle = await Article.findById(req.params.id);
+        if (!updatedArticle) {
+            return res.status(404).json({ error: 'Article  not found', message: 'Error finding article  by ID' });
         }
         const { title, body } = req.body;
         updatedArticle.title = title;

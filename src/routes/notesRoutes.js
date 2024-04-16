@@ -63,6 +63,34 @@ router.get('/article/:id', async (req, res) => {
     }
 });
 
+/* ------ Post Article by ID ------ */
+router.post('/article', async (req, res) => {
+    try {
+        const { languageId, articles: [{ title, body }] } = req.body;
+        
+        const newArticle = new Article({ title, body });
+        newArticle.save()
+            .then(article => {
+                // 将新文章的ID添加到所选择的语言的文章数组中
+                return Language.findByIdAndUpdate(
+                    languageId,
+                    { $push: { articles: article._id } },
+                    { new: true }
+                );
+            })
+            .then(updatedLanguage => {
+                console.log("Article ID added to language:", updatedLanguage);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+    } catch (err) {
+        console.error('Error creating new article:', err);
+        res.status(500).json({ error: 'Internal server error', message: 'Error creating new article' });
+    }
+});
+
 /* ------ Delete Language by ID ------ */
 router.delete('/article/:id', async (req, res) => {
     try {
